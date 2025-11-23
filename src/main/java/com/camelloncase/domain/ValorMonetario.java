@@ -1,12 +1,18 @@
 package com.camelloncase.domain;
 
+import jakarta.persistence.Embeddable;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
 
+@Embeddable
 public class ValorMonetario {
     
-    private final BigDecimal quantia;
+    private BigDecimal quantia;
+
+	protected ValorMonetario() {
+	}
     
     public ValorMonetario(BigDecimal quantia) {
         if(quantia == null || quantia.signum() < 0) {
@@ -33,9 +39,22 @@ public class ValorMonetario {
         return new ValorMonetario(this.quantia.subtract(outro.getQuantia()));
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        final ValorMonetario outro = (ValorMonetario) obj;
-        return Objects.equals(this.quantia, outro.getQuantia());
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (!(obj instanceof ValorMonetario outro)) return false;
+		return Objects.equals(this.quantia, outro.quantia);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(quantia);
+	}
+
+	@Override
+	public String toString() {
+		return "ValorMonetario{" +
+				"quantia=" + quantia +
+				'}';
+	}
 }

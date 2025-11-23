@@ -21,36 +21,36 @@ public class Pet {
 	private String id;
 	private String nome;
 	private String status;
-	private String ownerId; // referência ao agregado owner
+	private String ownerId;
 
 	protected Pet() { }
 
 	@CommandHandler
-	public Pet(CriarPetCommand cmd) {
-		AggregateLifecycle.apply(new PetCriado(cmd.id, cmd.nome));
+	public Pet(CriarPetCommand criarPetCommand) {
+		AggregateLifecycle.apply(new PetCriado(criarPetCommand.id, criarPetCommand.nome));
 	}
 
 	@CommandHandler
-	public void handle(AdotarPetCommand cmd) {
+	public void handle(AdotarPetCommand adotarPetCommand) {
 		if ("ADOPTED".equals(this.status)) {
 			throw new IllegalStateException("Pet já adotado.");
 		}
-		if (cmd.ownerId == null || cmd.ownerId.isBlank()) {
+		if (adotarPetCommand.ownerId == null || adotarPetCommand.ownerId.isBlank()) {
 			throw new IllegalArgumentException("ownerId obrigatório.");
 		}
-		AggregateLifecycle.apply(new PetAdotado(cmd.id, cmd.ownerId));
+		AggregateLifecycle.apply(new PetAdotado(adotarPetCommand.id, adotarPetCommand.ownerId));
 	}
 
 	@EventSourcingHandler
-	public void on(PetCriado evt) {
-		this.id = evt.id;
-		this.nome = evt.nome;
+	public void on(PetCriado petCriadoEvent) {
+		this.id = petCriadoEvent.id;
+		this.nome = petCriadoEvent.nome;
 		this.status = "AVAILABLE";
 	}
 
 	@EventSourcingHandler
-	public void on(PetAdotado evt) {
-		this.ownerId = evt.ownerId;
+	public void on(PetAdotado petAdotadoEvent) {
+		this.ownerId = petAdotadoEvent.ownerId;
 		this.status = "ADOPTED";
 	}
 }

@@ -14,12 +14,13 @@ public class ItemPedido {
 
 	private Integer quantidade;
 
+	@Embedded
 	private ValorMonetario totalItem;
 
 	private Long idProduto;
 
 	@JoinColumn(name = "PEDIDO_ID", referencedColumnName = "ID")
-	@OneToMany
+	@ManyToOne(fetch = FetchType.LAZY)
 	private Pedido pedido;
 
 	public ItemPedido() {}

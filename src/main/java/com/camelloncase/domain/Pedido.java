@@ -19,11 +19,12 @@ public class Pedido implements Serializable {
 	@Temporal(TemporalType.DATE)
 	private Date dataPedido;
 
-	@OneToMany
-	private List<ItemPedido> itensPedidos;
+	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<ItemPedido> itensPedidos = new ArrayList<>();
 
 	private Long idCliente;
 
+	@Embedded
 	private ValorMonetario valorMonetario;
 
 	private PedidoStatus status;

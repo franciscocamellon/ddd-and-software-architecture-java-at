@@ -1,4 +1,4 @@
-package com.camelloncase.domain;
+package com.camelloncase.domain.vo;
 
 import jakarta.persistence.Embeddable;
 

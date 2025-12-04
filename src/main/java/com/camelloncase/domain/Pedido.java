@@ -1,5 +1,6 @@
 package com.camelloncase.domain;
 
+import com.camelloncase.domain.vo.ValorMonetario;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
